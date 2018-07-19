@@ -1,0 +1,126 @@
+1.mvNCCompile
+/usr/local/bin/mvNCCompile -> /usr/local/bin/ncsdk/mvNCCompile.py*
+
+2.mvNCCompile.py:
+	filetype = network.split(".")[-1]
+    if filetype in ["prototxt"]:
+        from Controllers.CaffeParser import parse_caffe
+        net = parse_caffe(args, myriad_config)
+    elif filetype in ["pb", "protobuf", "meta"]:
+        from Controllers.TensorFlowParser import parse_tensor
+        net = parse_tensor(args, myriad_config)
+    else:
+        throw_error(ErrorTable.ParserNotSupported)
+
+3.parse caffe:
+	try:
+    		os.environ['GLOG_minloglevel'] = '2'  # Supress Caffe Output
+    		import caffe
+	except ImportError:
+    		print("Error importing caffe")
+   		quit()
+
+	try:
+    		from caffe.proto import caffe_pb2
+	except ImportError:
+    		print("Error importing caffe module caffe_pb2")
+    		quit()
+
+
+	
+	def parse_caffe(arguments, myriad_conf, debug=False, file_gen=False):
+	...
+	...
+    	caffe.set_mode_cpu()
+    	description = path
+    	if weights is None:
+        	open("zero_weights.caffemodel", "wb").close()
+        	weights = "zero_weights.caffemodel"
+        	print("\033[91m****** WARNING: using empty weights ******\033[0m")
+    	if not os.path.isfile(weights):
+        	throw_error(ErrorTable.ArgumentErrorWeights)
+   	 try:
+        	net = caffe.Net(description, weights, caffe.TEST)
+    	except MemoryError:
+        	throw_error(ErrorTable.CaffeMemoryError)
+    	try:
+        	f = open(description)
+        	file_contents = f.read()
+        	f.close()
+    	except BaseException:
+        	throw_error(ErrorTable.ArgumentErrorDescription)
+    	msg = caffe_pb2.NetParameter()  # Parse via Caffe's NetParameter
+    	text_format.Merge(str(file_contents), msg)
+
+
+	for idx, layer in enumerate(layers):
+		if isEltwise(layer.type) ...
+
+		
+		if isEltwise(layer.type) or isConcat(layer.type):
+
+		if isDropout(layer.type):
+            		continue
+        	if isBatchNorm(layer.type) or isScale(layer.type):
+			
+
+		if isInnerLRN(layer):
+
+
+		if isPriorBox(layer.type):
+
+		if isReshape(layer.type):
+            		if(len(layer.reshape_param.shape.dim) == 3):
+                		new_shape_X = 1
+                		new_shape_Y = layer.reshape_param.shape.dim[2]
+                		new_shape_C = layer.reshape_param.shape.dim[1]
+            		else:
+                		new_shape_X = layer.reshape_param.shape.dim[3]
+                		new_shape_Y = layer.reshape_param.shape.dim[2]
+                		new_shape_C = layer.reshape_param.shape.dim[1]
+
+           		network.attach(
+                		NetworkStage(layer.name,
+                             		top,
+                             		StorageOrder.orderZYX,
+                             		0,
+                             		0,
+                             		PadStyle.caffe,
+                             		DataType.fp16,
+                             		DataType.fp16,
+                             		StageType.reshape,
+                             		# Radix and stride
+                             		1,
+                             		1,
+                             		1,
+                             		1,
+                             		# X, Y, Z
+                             		inshape[2],
+                             		inshape[1],
+                             		inshape[0],
+                             		# fh, fw
+                             		1,
+                             		1,
+                             		# Output Channels (K)
+                             		inshape[0],
+                             		# Taps, Bias,
+                             		None,
+                             		TapsOrder.orderKCHW,
+                             		None,
+                             		# Pre and post ops
+                             		None,
+                             		StageType.none,
+                             		None,
+                             		0,
+                             		0,
+                             		None,
+                             		myriad_conf,
+                             		arguments,
+                             		new_x = new_shape_X,
+                             		new_y = new_shape_Y,
+                             		new_c = new_shape_C)
+            		)
+            		last_layer = layer
+            		if layer.name == outputNodeName:
+                		break
+            		continue	
