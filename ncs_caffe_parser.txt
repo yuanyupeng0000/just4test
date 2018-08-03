@@ -12,7 +12,7 @@
     else:
         throw_error(ErrorTable.ParserNotSupported)
 
-3.parse caffe:
+3.parse caffe:(CaffeParser.py)
 	try:
     		os.environ['GLOG_minloglevel'] = '2'  # Supress Caffe Output
     		import caffe
@@ -123,4 +123,121 @@
             		last_layer = layer
             		if layer.name == outputNodeName:
                 		break
-            		continue	
+            		continue
+		if isPriorBox(layer.type):
+			params=.......
+			params=.......
+			node = NetworkStage(......)
+			network.attach(node)
+
+            		last_layer = layer
+            		if layer.name == outputNodeName:
+                		break
+           		continue
+		if (isDetectionOutput(layer.type)):
+			if (isPower(layer.type) or 
+           			isNormalize(layer.type) or 
+          			isPermute(layer.type)):
+					params=.......
+					params=.......
+					node = NetworkStage(......)
+					network.attach(node)
+
+            				last_layer = layer
+            				if layer.name == outputNodeName:
+                				break
+           				continue
+
+		if isSoftMax(layer.type):
+
+
+		if isCrop(layer.type):
+
+		
+		if arguments.explicit_concat and isConcat(layer.type):
+
+
+		if isDepthwiseConvolution(layer, get_caffe_output_channels(
+                	layer, inshape, top, network), inshape[0]):
+			
+
+		if (
+            		not isReLU(layer.type) and not
+            		isConcat(layer.type) and not
+            		isSlice(layer.type) and not
+            		isELU(layer.type) and not
+            		isDepthwiseConvolution(
+                		layer,
+                		get_caffe_output_channels(
+                   		layer,
+                    		inshape,
+                    		top,
+                    		network),
+                		inshape[0])):
+
+            		layer_params = None
+            		if(isConvolution(layer.type) or isDeconvolution(layer.type)):
+
+
+		else:
+            		caffe_apply_minor_op(network, layer, top)
+        		last_layer = layer
+        		if layer.name == outputNodeName:
+            			break
+	
+	if last_layer.type == 'Concat':
+        	nodes = network.search_several(last_layer.bottom)
+        	NetworkStage.concat(nodes)
+
+    	if(isDetectionOutput(last_layer.type)):
+        	network.outputIsSsdDetOut = True
+
+    	if outputNodeName is not None:
+        	if inputNodeName is not None:
+            	# Ensure we have the same inputs for each method
+            		net.blobs[input_bottom].data[...] = input_data
+            		try:
+                		net.forward(start=startNodeName, end=outputNodeName)
+           		except BaseException:
+                		throw_error(ErrorTable.NoOutputNode,
+                            		outputNodeName + "/" + startNodeName)
+        	else:
+            		# Ensure we have the same inputs for each method
+           		 net.blobs['data'].data[...] = input_data
+            		try:
+                		net.forward(end=outputNodeName)
+            		except BaseException:
+                		throw_error(ErrorTable.NoOutputNode, outputNodeName)
+   	else:
+        	if inputNodeName is not None:
+            	# Ensure we have the same inputs for each method
+            		net.blobs[input_bottom].data[...] = input_data
+            		net.forward(start=startNodeName)
+        	else:
+            	# Ensure we have the same inputs for each method
+            		net.blobs['data'].data[...] = input_data
+            		net.forward()
+
+    	if file_gen:
+        	try:
+            		np.save(filename + "_expected.npy",
+                    		net.blobs[outputNodeName].data[0].astype(dtype=np.float16))
+
+        	except BaseException:
+            		throw_error(ErrorTable.NoOutputNode, extra=net.blobs.keys())
+
+    caffe_output_shape = net.blobs[outputNodeName].data.shape
+    output_shape       = np.ones(3, dtype = "i4")
+    # Substract 1 because caffe output will (almost)always have the batch dimension.
+    output_shape_len   = len(caffe_output_shape) - 1
+    output_shape[0 : output_shape_len] = caffe_output_shape[1:]
+    network.outputTensor = zyx_to_yxz_dimension_only(output_shape)
+
+    return network
+
+
+4.create graph:
+def create_graph(network, inputnode = None, outputnode = None, outfile = 'graph', 
+		nshaves = 1, inputsize = None, weights = None):
+	
+

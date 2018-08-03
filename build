@@ -1,0 +1,2 @@
+g++ -I/usr/include/python2.7/  main.c -o main -L/usr/lib/ -lpython2.7 -lopencv_core -lopencv_ml -lopencv_highgui -lopencv_imgproc -lopencv_video 
+./main
