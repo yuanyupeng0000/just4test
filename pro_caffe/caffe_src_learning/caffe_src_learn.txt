@@ -28,3 +28,11 @@ static BrewFunction GetBrewFunction(const caffe::string& name) {
     return NULL;  // not reachable, just to suppress old compiler warnings.
   }
 }
+
+2.Use protobuf to read the network file: proto Message constructure --> c++ classe
+
+3.mutalbe的中文意思是“可变的，易变的”，跟constant（既C++中的const）是反义词。在C++中，mutable也是为了突破const的限制而设置的。被mutable修饰的变量(mutable只能由于修饰类的非静态数据成员)，将永远处于可变的状态，即使在一个const函数中。
+
+4. Use Intelegence-pointer------------>shared_ptr
+shared_ptr<caffe::Solver<float> >
+      solver(caffe::SolverRegistry<float>::CreateSolver(solver_param));
