@@ -1,0 +1,30 @@
+1.The progress of register brew func: Define a Macro that its real context is to claim a class and define a instance of it. When do that, will call the construct func whithin whom to fill a map whith the key-value pair=<string, func_pointer>. The instance is different according to the param of the Macro.
+
+typedef int (*BrewFunction)();
+typedef std::map<caffe::string, BrewFunction> BrewMap;
+BrewMap g_brew_map;
+
+#define RegisterBrewFunction(func) \
+namespace { \
+class __Registerer_##func { \
+ public: /* NOLINT */ \
+  __Registerer_##func() { \
+    g_brew_map[#func] = &func; \
+  } \
+}; \
+__Registerer_##func g_registerer_##func; \
+}
+
+static BrewFunction GetBrewFunction(const caffe::string& name) {
+  if (g_brew_map.count(name)) {
+    return g_brew_map[name];
+  } else {
+    LOG(ERROR) << "Available caffe actions:";
+    for (BrewMap::iterator it = g_brew_map.begin();
+         it != g_brew_map.end(); ++it) {
+      LOG(ERROR) << "\t" << it->first;
+    }
+    LOG(FATAL) << "Unknown action: " << name;
+    return NULL;  // not reachable, just to suppress old compiler warnings.
+  }
+}
