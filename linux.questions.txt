@@ -1,0 +1,1 @@
+1. In a console line, open and edit the .bashrc, then neither source it nor run "export xxxxx" can not work ! only open a new console line can work. 

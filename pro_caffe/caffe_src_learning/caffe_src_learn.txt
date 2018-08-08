@@ -36,3 +36,5 @@ static BrewFunction GetBrewFunction(const caffe::string& name) {
 4. Use Intelegence-pointer------------>shared_ptr
 shared_ptr<caffe::Solver<float> >
       solver(caffe::SolverRegistry<float>::CreateSolver(solver_param));
+
+5. Use factory pattern to create solver
