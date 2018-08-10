@@ -120,6 +120,7 @@ class SPPParameter;
 class V1LayerParameter;
 class V0LayerParameter;
 class PReLUParameter;
+class AbsoluteLossParameter;
 
 enum EmitConstraint_EmitType {
   EmitConstraint_EmitType_CENTER = 0,
@@ -4704,6 +4705,15 @@ class LayerParameter : public ::google::protobuf::Message {
   inline ::caffe::WindowDataParameter* release_window_data_param();
   inline void set_allocated_window_data_param(::caffe::WindowDataParameter* window_data_param);
 
+  // optional .caffe.AbsoluteLossParameter Absolute_loss_param = 151;
+  inline bool has_absolute_loss_param() const;
+  inline void clear_absolute_loss_param();
+  static const int kAbsoluteLossParamFieldNumber = 151;
+  inline const ::caffe::AbsoluteLossParameter& absolute_loss_param() const;
+  inline ::caffe::AbsoluteLossParameter* mutable_absolute_loss_param();
+  inline ::caffe::AbsoluteLossParameter* release_absolute_loss_param();
+  inline void set_allocated_absolute_loss_param(::caffe::AbsoluteLossParameter* absolute_loss_param);
+
   // @@protoc_insertion_point(class_scope:caffe.LayerParameter)
  private:
   inline void set_has_name();
@@ -4822,6 +4832,8 @@ class LayerParameter : public ::google::protobuf::Message {
   inline void clear_has_video_data_param();
   inline void set_has_window_data_param();
   inline void clear_has_window_data_param();
+  inline void set_has_absolute_loss_param();
+  inline void clear_has_absolute_loss_param();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -4892,6 +4904,7 @@ class LayerParameter : public ::google::protobuf::Message {
   ::caffe::TileParameter* tile_param_;
   ::caffe::VideoDataParameter* video_data_param_;
   ::caffe::WindowDataParameter* window_data_param_;
+  ::caffe::AbsoluteLossParameter* absolute_loss_param_;
   int phase_;
   friend void  protobuf_AddDesc_caffe_2eproto();
   friend void protobuf_AssignDesc_caffe_2eproto();
@@ -14285,6 +14298,85 @@ class PReLUParameter : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static PReLUParameter* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class AbsoluteLossParameter : public ::google::protobuf::Message {
+ public:
+  AbsoluteLossParameter();
+  virtual ~AbsoluteLossParameter();
+
+  AbsoluteLossParameter(const AbsoluteLossParameter& from);
+
+  inline AbsoluteLossParameter& operator=(const AbsoluteLossParameter& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AbsoluteLossParameter& default_instance();
+
+  void Swap(AbsoluteLossParameter* other);
+
+  // implements Message ----------------------------------------------
+
+  AbsoluteLossParameter* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const AbsoluteLossParameter& from);
+  void MergeFrom(const AbsoluteLossParameter& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional float dis = 1 [default = 1];
+  inline bool has_dis() const;
+  inline void clear_dis();
+  static const int kDisFieldNumber = 1;
+  inline float dis() const;
+  inline void set_dis(float value);
+
+  // @@protoc_insertion_point(class_scope:caffe.AbsoluteLossParameter)
+ private:
+  inline void set_has_dis();
+  inline void clear_has_dis();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  float dis_;
+  friend void  protobuf_AddDesc_caffe_2eproto();
+  friend void protobuf_AssignDesc_caffe_2eproto();
+  friend void protobuf_ShutdownFile_caffe_2eproto();
+
+  void InitAsDefaultInstance();
+  static AbsoluteLossParameter* default_instance_;
+};
 // ===================================================================
 
 
@@ -21498,6 +21590,47 @@ inline void LayerParameter::set_allocated_window_data_param(::caffe::WindowDataP
     clear_has_window_data_param();
   }
   // @@protoc_insertion_point(field_set_allocated:caffe.LayerParameter.window_data_param)
+}
+
+// optional .caffe.AbsoluteLossParameter Absolute_loss_param = 151;
+inline bool LayerParameter::has_absolute_loss_param() const {
+  return (_has_bits_[2] & 0x00000004u) != 0;
+}
+inline void LayerParameter::set_has_absolute_loss_param() {
+  _has_bits_[2] |= 0x00000004u;
+}
+inline void LayerParameter::clear_has_absolute_loss_param() {
+  _has_bits_[2] &= ~0x00000004u;
+}
+inline void LayerParameter::clear_absolute_loss_param() {
+  if (absolute_loss_param_ != NULL) absolute_loss_param_->::caffe::AbsoluteLossParameter::Clear();
+  clear_has_absolute_loss_param();
+}
+inline const ::caffe::AbsoluteLossParameter& LayerParameter::absolute_loss_param() const {
+  // @@protoc_insertion_point(field_get:caffe.LayerParameter.Absolute_loss_param)
+  return absolute_loss_param_ != NULL ? *absolute_loss_param_ : *default_instance_->absolute_loss_param_;
+}
+inline ::caffe::AbsoluteLossParameter* LayerParameter::mutable_absolute_loss_param() {
+  set_has_absolute_loss_param();
+  if (absolute_loss_param_ == NULL) absolute_loss_param_ = new ::caffe::AbsoluteLossParameter;
+  // @@protoc_insertion_point(field_mutable:caffe.LayerParameter.Absolute_loss_param)
+  return absolute_loss_param_;
+}
+inline ::caffe::AbsoluteLossParameter* LayerParameter::release_absolute_loss_param() {
+  clear_has_absolute_loss_param();
+  ::caffe::AbsoluteLossParameter* temp = absolute_loss_param_;
+  absolute_loss_param_ = NULL;
+  return temp;
+}
+inline void LayerParameter::set_allocated_absolute_loss_param(::caffe::AbsoluteLossParameter* absolute_loss_param) {
+  delete absolute_loss_param_;
+  absolute_loss_param_ = absolute_loss_param;
+  if (absolute_loss_param) {
+    set_has_absolute_loss_param();
+  } else {
+    clear_has_absolute_loss_param();
+  }
+  // @@protoc_insertion_point(field_set_allocated:caffe.LayerParameter.Absolute_loss_param)
 }
 
 // -------------------------------------------------------------------
@@ -33928,6 +34061,34 @@ inline void PReLUParameter::set_channel_shared(bool value) {
   set_has_channel_shared();
   channel_shared_ = value;
   // @@protoc_insertion_point(field_set:caffe.PReLUParameter.channel_shared)
+}
+
+// -------------------------------------------------------------------
+
+// AbsoluteLossParameter
+
+// optional float dis = 1 [default = 1];
+inline bool AbsoluteLossParameter::has_dis() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void AbsoluteLossParameter::set_has_dis() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void AbsoluteLossParameter::clear_has_dis() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void AbsoluteLossParameter::clear_dis() {
+  dis_ = 1;
+  clear_has_dis();
+}
+inline float AbsoluteLossParameter::dis() const {
+  // @@protoc_insertion_point(field_get:caffe.AbsoluteLossParameter.dis)
+  return dis_;
+}
+inline void AbsoluteLossParameter::set_dis(float value) {
+  set_has_dis();
+  dis_ = value;
+  // @@protoc_insertion_point(field_set:caffe.AbsoluteLossParameter.dis)
 }
 
 
